@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["score", "political_lean", "summary", "flags"],
+  "properties": {
+    "score": { "type": "integer", "minimum": 0, "maximum": 10 },
+    "political_lean": { "type": "string", "enum": ["left", "right", "neutral"] },
+    "summary": { "type": "string" },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sentence", "type", "explanation"],
+        "properties": {
+          "sentence": { "type": "string" },
+          "type": { "type": "string", "enum": ["loaded_language", "missing_perspective", "framing", "false_balance"] },
+          "explanation": { "type": "string" }
+        }
+      }
+    }
+  }
+}

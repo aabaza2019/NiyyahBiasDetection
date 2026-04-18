@@ -1,0 +1,17 @@
+{
+  "score": 7,
+  "political_lean": "right",
+  "summary": "Article uses loaded language and omits key opposing viewpoints.",
+  "flags": [
+    {
+      "sentence": "The radical left agenda continues to push extreme policies.",
+      "type": "loaded_language",
+      "explanation": "Pejorative framing with no factual basis."
+    },
+    {
+      "sentence": "Experts universally agree this policy will fail.",
+      "type": "missing_perspective",
+      "explanation": "No dissenting expert views are cited."
+    }
+  ]
+}

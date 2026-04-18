@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Bias Detector",
+  "version": "0.1.0",
+  "description": "Detects political bias in news articles using an LLM.",
+  "permissions": ["activeTab", "storage", "scripting"],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content.js"]
+    }
+  ]
+}
