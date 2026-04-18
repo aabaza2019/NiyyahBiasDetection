@@ -1,9 +1,7 @@
-// Message type constants for chrome.runtime.sendMessage
 const MSG = {
-  ANALYZE: "ANALYZE",
-  ANALYZE_RESULT: "ANALYZE_RESULT",
-  ANALYZE_ERROR: "ANALYZE_ERROR",
-  GET_ARTICLE: "GET_ARTICLE",
+  ANALYZE: 'ANALYZE',
+  ANALYZE_RESULT: 'ANALYZE_RESULT',
+  ANALYZE_ERROR: 'ANALYZE_ERROR',
+  GET_ARTICLE: 'GET_ARTICLE',
+  HIGHLIGHT: 'HIGHLIGHT',
 };
-
-// Shared across content script, service worker, and popup

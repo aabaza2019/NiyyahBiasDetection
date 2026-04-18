@@ -3,7 +3,7 @@
   "name": "Bias Detector",
   "version": "0.1.0",
   "description": "Detects political bias in news articles using an LLM.",
-  "permissions": ["activeTab", "storage", "scripting"],
+  "permissions": ["activeTab", "storage", "scripting", "tabs"],
   "background": {
     "service_worker": "background/service-worker.js"
   },
