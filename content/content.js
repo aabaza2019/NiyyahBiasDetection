@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     message.flags.forEach(f => highlightSentence(f.sentence, f.type, f.explanation));
     sendResponse({ ok: true });
   } else if (message.type === MSG.SHOW_RESULT) {
-    showPanel(message.data);
+    showPanel(message.data, message.selectedText);
     sendResponse({ ok: true });
   } else if (message.type === MSG.SHOW_ERROR) {
     showPanelError(message.error);
@@ -78,11 +78,12 @@ function highlightSentence(sentence, type, explanation) {
   }
 }
 
-function showPanel(data) {
+function showPanel(data, selectedText) {
   removePanel();
   injectStyles();
   const { score, political_lean, summary, flags } = data;
   const scoreClass = score >= 7 ? 'bd-score-high' : score >= 4 ? 'bd-score-mid' : 'bd-score-low';
+  const preview = selectedText ? selectedText.slice(0, 120) + (selectedText.length > 120 ? '…' : '') : '';
 
   const panel = document.createElement('div');
   panel.id = 'bias-detector-panel';
@@ -92,6 +93,7 @@ function showPanel(data) {
       <span class="bd-source">selection</span>
       <button class="bd-close" id="bd-close">✕</button>
     </div>
+    ${preview ? `<div class="bd-input-preview">"${escPanel(preview)}"</div>` : ''}
     <div class="bd-score-row">
       <div class="bd-score ${scoreClass}">
         <span class="bd-score-num">${score}</span><span class="bd-score-max">/10</span>
@@ -172,6 +174,7 @@ function injectStyles() {
     .bd-source { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 4px; background: rgba(59,130,246,0.15); color: #60a5fa; }
     .bd-close { background: none; border: none; color: #475569; cursor: pointer; font-size: 14px; padding: 0; line-height: 1; }
     .bd-close:hover { color: #e2e8f0; }
+    .bd-input-preview { padding: 8px 16px; font-size: 12px; font-style: italic; color: #64748b; background: #1e293b; border-bottom: 1px solid #1e293b; line-height: 1.5; }
     .bd-score-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #1e293b; flex-shrink: 0; }
     .bd-score { display: flex; align-items: baseline; gap: 2px; }
     .bd-score-num { font-size: 40px; font-weight: 700; line-height: 1; }

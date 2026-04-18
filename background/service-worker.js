@@ -25,7 +25,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
   try {
     const data = await analyzeArticle(text);
-    await chrome.tabs.sendMessage(tab.id, { type: MSG.SHOW_RESULT, data });
+    await chrome.tabs.sendMessage(tab.id, { type: MSG.SHOW_RESULT, data, selectedText: text });
     await chrome.tabs.sendMessage(tab.id, { type: MSG.HIGHLIGHT, flags: data.flags });
   } catch (e) {
     chrome.tabs.sendMessage(tab.id, { type: MSG.SHOW_ERROR, error: e.message || 'Analysis failed.' });
