@@ -34,7 +34,7 @@ async function handleAnalyze() {
 
   try {
     const data = await analyzeArticle(article.text);
-    return { type: MSG.ANALYZE_RESULT, data };
+    return { type: MSG.ANALYZE_RESULT, data, fromSelection: article.fromSelection ?? false };
   } catch (e) {
     return { type: MSG.ANALYZE_ERROR, error: e.message || 'Analysis failed.' };
   }

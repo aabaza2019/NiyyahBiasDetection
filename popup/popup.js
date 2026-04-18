@@ -21,7 +21,7 @@ function analyze() {
       return;
     }
     if (response.type === MSG.ANALYZE_RESULT) {
-      render('result', response.data);
+      render('result', response.data, response.fromSelection);
       sendHighlights(response.data.flags);
     } else {
       render('error', { error: response.error || 'Analysis failed.' });
@@ -36,7 +36,7 @@ function sendHighlights(flags) {
   });
 }
 
-function render(state, data) {
+function render(state, data, fromSelection) {
   const app = document.getElementById('app');
 
   if (state === 'loading') {
@@ -72,7 +72,10 @@ function render(state, data) {
     const scoreClass = score >= 7 ? 'score-high' : score >= 4 ? 'score-mid' : 'score-low';
 
     app.innerHTML = `
-      <header><h1>Bias Detector</h1></header>
+      <header>
+        <h1>Bias Detector</h1>
+        ${fromSelection ? '<span class="source-badge">selection</span>' : ''}
+      </header>
       <div class="score-card">
         <div class="score ${scoreClass}">
           <span class="score-num">${score}</span><span class="score-max">/10</span>

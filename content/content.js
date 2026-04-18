@@ -14,6 +14,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 function extractArticle() {
+  const selected = window.getSelection()?.toString().trim();
+  if (selected && selected.length > 20) {
+    return { text: cleanText(selected), found: true, fromSelection: true };
+  }
+
   const selectors = [
     'article',
     '[role="main"]',
