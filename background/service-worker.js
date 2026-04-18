@@ -6,7 +6,31 @@ const MSG = {
   ANALYZE_ERROR: 'ANALYZE_ERROR',
   GET_ARTICLE: 'GET_ARTICLE',
   HIGHLIGHT: 'HIGHLIGHT',
+  SHOW_RESULT: 'SHOW_RESULT',
+  SHOW_ERROR: 'SHOW_ERROR',
 };
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.create({
+    id: 'analyze-selection',
+    title: 'Analyze selection for bias',
+    contexts: ['selection'],
+  });
+});
+
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (info.menuItemId !== 'analyze-selection') return;
+  const text = info.selectionText?.trim();
+  if (!text || !tab?.id) return;
+
+  try {
+    const data = await analyzeArticle(text);
+    await chrome.tabs.sendMessage(tab.id, { type: MSG.SHOW_RESULT, data });
+    await chrome.tabs.sendMessage(tab.id, { type: MSG.HIGHLIGHT, flags: data.flags });
+  } catch (e) {
+    chrome.tabs.sendMessage(tab.id, { type: MSG.SHOW_ERROR, error: e.message || 'Analysis failed.' });
+  }
+});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === MSG.ANALYZE) {
