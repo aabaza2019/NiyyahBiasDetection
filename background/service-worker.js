@@ -7,6 +7,7 @@ const MSG = {
   ANALYZE_ERROR: 'ANALYZE_ERROR',
   GET_ARTICLE: 'GET_ARTICLE',
   HIGHLIGHT: 'HIGHLIGHT',
+  SHOW_LOADING: 'SHOW_LOADING',
   SHOW_RESULT: 'SHOW_RESULT',
   SHOW_ERROR: 'SHOW_ERROR',
 };
@@ -26,6 +27,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId !== 'analyze-selection') return;
   const text = info.selectionText?.trim();
   if (!text || !tab?.id) return;
+
+  chrome.tabs.sendMessage(tab.id, { type: MSG.SHOW_LOADING });
 
   try {
     const data = await analyzeArticle(text);

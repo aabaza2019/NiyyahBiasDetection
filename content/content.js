@@ -1,6 +1,7 @@
 const MSG = {
   GET_ARTICLE: 'GET_ARTICLE',
   HIGHLIGHT: 'HIGHLIGHT',
+  SHOW_LOADING: 'SHOW_LOADING',
   SHOW_RESULT: 'SHOW_RESULT',
   SHOW_ERROR: 'SHOW_ERROR',
 };
@@ -11,6 +12,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.type === MSG.HIGHLIGHT) {
     injectStyles();
     message.flags.forEach(f => highlightSentence(f.sentence, f.type, f.explanation));
+    sendResponse({ ok: true });
+  } else if (message.type === MSG.SHOW_LOADING) {
+    showPanelLoading();
     sendResponse({ ok: true });
   } else if (message.type === MSG.SHOW_RESULT) {
     showPanel(message.data, message.selectedText);
@@ -76,6 +80,24 @@ function highlightSentence(sentence, type, explanation) {
     }
     break;
   }
+}
+
+function showPanelLoading() {
+  removePanel();
+  injectStyles();
+  const panel = document.createElement('div');
+  panel.id = 'bias-detector-panel';
+  panel.innerHTML = `
+    <div class="bd-header">
+      <span class="bd-title">Bias Detector</span>
+      <button class="bd-close" id="bd-close">✕</button>
+    </div>
+    <div class="bd-loading">
+      <div class="bd-spinner"></div>
+      <p>Analyzing…</p>
+    </div>`;
+  document.body.appendChild(panel);
+  document.getElementById('bd-close').addEventListener('click', removePanel);
 }
 
 function showPanel(data, selectedText) {
@@ -174,6 +196,10 @@ function injectStyles() {
     .bd-source { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 4px; background: rgba(59,130,246,0.15); color: #60a5fa; }
     .bd-close { background: none; border: none; color: #475569; cursor: pointer; font-size: 14px; padding: 0; line-height: 1; }
     .bd-close:hover { color: #e2e8f0; }
+    .bd-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; gap: 14px; }
+    .bd-spinner { width: 28px; height: 28px; border: 3px solid #334155; border-top-color: #3b82f6; border-radius: 50%; animation: bd-spin 0.8s linear infinite; }
+    @keyframes bd-spin { to { transform: rotate(360deg); } }
+    .bd-loading p { color: #64748b; font-size: 13px; }
     .bd-input-preview { padding: 8px 16px; font-size: 12px; font-style: italic; color: #64748b; background: #1e293b; border-bottom: 1px solid #1e293b; line-height: 1.5; }
     .bd-score-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #1e293b; flex-shrink: 0; }
     .bd-score { display: flex; align-items: baseline; gap: 2px; }
