@@ -1,0 +1,24 @@
+{
+  "name": "niyyahbiasdetection",
+  "version": "1.0.0",
+  "description": "Chrome Extension for Bias Detection using an LLM under the hood",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aabaza2019/NiyyahBiasDetection.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/aabaza2019/NiyyahBiasDetection/issues"
+  },
+  "homepage": "https://github.com/aabaza2019/NiyyahBiasDetection#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
+}
