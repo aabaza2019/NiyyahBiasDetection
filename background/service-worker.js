@@ -1,4 +1,5 @@
 importScripts('../shared/prompt.js', 'api.js');
+try { importScripts('dev-config.js'); } catch { /* not present in production */ }
 
 const MSG = {
   ANALYZE: 'ANALYZE',
@@ -16,6 +17,9 @@ chrome.runtime.onInstalled.addListener(() => {
     title: 'Analyze selection for bias',
     contexts: ['selection'],
   });
+  if (typeof DEV_API_KEY !== 'undefined' && DEV_API_KEY) {
+    chrome.storage.local.set({ apiKey: DEV_API_KEY });
+  }
 });
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
