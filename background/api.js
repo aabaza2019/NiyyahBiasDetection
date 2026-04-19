@@ -42,7 +42,8 @@ async function callLLM(apiKey, messages) {
 async function analyzeArticle(text) {
   const { apiKey } = await chrome.storage.local.get("apiKey");
   if (!apiKey) throw new Error("No API key set");
-  const raw = await callLLM(apiKey, [{ role: "user", content: text }]);
+  const messages = buildMessages(text);
+  const raw = await callLLM(apiKey, messages);
   return JSON.parse(raw);
 }
 

@@ -1,4 +1,4 @@
-importScripts('api.js');
+importScripts('../shared/prompt.js', 'api.js');
 
 const MSG = {
   ANALYZE: 'ANALYZE',
